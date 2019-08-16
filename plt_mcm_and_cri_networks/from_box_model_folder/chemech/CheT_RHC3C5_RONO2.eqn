@@ -1,0 +1,90 @@
+#EQUATIONS
+{selection of RHC3C5 chemistry with RONO2 reactions uncommented}
+{propane}
+<R100> C3H8 + OH = 0.736*iPrOO + 0.264*nPrOO : 7.60E-12*EXP(-585/temp); {replaces <R85>, <R86> in CheT_RHC1C3.eqn}
+<R101> nPrOO + NO = 0.980*NO2 + 0.980*EtCHO + 0.980*HO2 : 2.90E-12*EXP(350/temp); {replaces <R40> in CheT_RHC1C3.eqn}
+<R102> iPrOO + NO = 0.958*NO2 + 0.958*Me2CO + 0.958*HO2 : 2.70E-12*EXP(360/temp); {replaces <R24> in CheT_RHC1C3.eqn}
+<R103> nPrOO + NO = 0.020*nPrONO2 : 2.90E-12*EXP(350/temp);
+<R104> iPrOO + NO = 0.042*iPrONO2 : 2.70E-12*EXP(360/temp);
+<R105> nPrONO2 = 1.*NO2 + 1.*EtCHO + 1.*HO2 : SUN*1.285E-06; {MeONO2 hv rate}
+<R106> iPrONO2 = 1.*NO2 + 1.*Me2CO + 1.*HO2 : SUN*1.285E-06; {MeONO2 hv rate}
+<R107> nPrONO2 + OH = 1.*EtCHO + 1.*NO2 : 5.80E-13;
+<R108> iPrONO2 + OH = 1.*Me2CO + 1.*NO2 : 6.20E-13*EXP(-230/temp);
+{list of new species: iPrONO2 nPrONO2}
+{n-butane}
+<R200> nC4H10 + OH = 1.*sBuOO : 9.80E-12*EXP(-425/temp); {sBuOO = NC4H9O2+SC4H9O2, 0.873 goes into SC4H9O2 in MCM}
+<R201> sBuOO + NO = 0.910*NO2 + 0.594*MEK + 0.594*HO2 + 0.316*MeCHO + 0.316*EtOO : 2.70E-12*EXP(360/temp);
+<R202> sBuOO + HO2 = 0.625*sBuOOH : 2.91E-13*EXP(1300/temp);
+<R203> sBuOOH = 1.*OH + 0.652*MeCHO + 0.652*EtOO + 0.348*MEK + 0.348*HO2 : 3.55E-06;
+<R204> sBuOOH + OH = 1.*MEK + 1.*OH : 2.15E-11;
+<R205> sBuOOH + OH = 1.*sBuOO : 1.90E-12*EXP(190/temp);
+<R206> MEK = 1.*MeCO3 + 1.*EtOO : 1.94E-06;
+<R207> MEK + OH = 1.*MeCHO + 1.*MeCO3 - 1.*NO + 1.*NO2 : 1.50E-12*EXP(-90/temp); {simplified destruction of major product MEKBO2}
+<R208> sBuOO + NO = 0.090*sBuONO2 : 2.70E-12*EXP(360/temp);
+<R209> sBuONO2 = 1.*NO2 + 0.594*MEK + 0.594*HO2 + 0.316*MeCHO + 0.316*EtOO : SUN*1.285E-06; {MeONO2 hv rate}
+<R210> sBuONO2 + OH = 1.*MEK + 1.*NO2 : 8.60E-13;
+{list of new species: MEK nC4H10 sBuONO2 sBuOO sBuOOH}
+{i-butane}{no nitrates!}
+<R300> iC4H10 + OH = 0.794*tBuOO + 0.206*iBuOO : 1.16E-17*(temp**2)*EXP(225/temp);
+<R301> iBuOO + NO = 1.*NO2 + 1.*iPrCHO + 1.*HO2 : 2.70E-12*EXP(360/temp);
+<R302> tBuOO + NO = 1.*NO2 + 1.*Me2CO + 1.*MeOO : 2.70E-12*EXP(360/temp);
+<R303> iBuOO + HO2 = 0.625*iBuOOH : 2.91E-13*EXP(1300/temp);
+<R304> tBuOO + HO2 = 0.625*tBuOOH : 2.91E-13*EXP(1300/temp);
+<R305> iBuOOH = 1.*OH + 1.*iPrCHO + 1.*HO2 : 3.55E-06;
+<R306> iBuOOH + OH = 1.*iBuOO : 1.90E-12*EXP(190/temp);
+<R307> iBuOOH + OH = 1.*iPrCHO + 1.*OH : 1.24E-11;
+<R308> tBuOOH = 1.*OH + 1.*Me2CO + 1.*MeOO : 3.55E-06;
+<R309> tBuOOH + OH = 1.*tBuOO : 2.17E-12*EXP(190/temp);
+<R310> iPrCHO = 1.*iPrOO + 1.*HO2 + 1.*CO : 3.04E-05;
+<R311> iPrCHO + OH = 1.*iPrCO3 : 6.80E-12*EXP(410/temp); {0.887 goes here in MCM}
+<R312> iPrCO3 + NO = 1.*iPrOO + 1.*NO2 : 7.50E-12*EXP(290/temp);
+<R313> iPrCO3 + HO2 = 1.*iPrOO + 1.*OH : 5.20E-13*EXP(980/temp); {0.44 goes here in MCM}
+{list of new species: iC4H10 iBuOO iBuOOH tBuOO tBuOOH iPrCHO iPrCO3}
+{n-pentane}
+<R400> nC5H12 + OH = 0.6095*nPeBOO + 0.3905*nPeCOO : 2.44E-17*(temp**2)*EXP(183/temp); {half of PEAO2 rolled in to nPeBOO, half - to nPeCOO}
+<R401> nPeBOO + NO = 0.880*NO2 + 0.880*MPRK + 0.880*HO2 : 2.70E-12*EXP(360/temp); {0.880*PEBO is splitted between MPRK and HO2 ignoring HO2C5O2}
+<R402> nPeCOO + NO = 0.883*NO2 + 0.569*DIEK + 0.569*HO2 + 0.314*EtOO + 0.314*EtCHO : 2.70E-12*EXP(360/temp); {0.883*PECO is splitted between DIEK, HO2, EtOO, EtCHO depending on rates}
+<R403> nPeBOO + HO2 = 0.706*nPeBOOH : 2.91E-13*EXP(1300/temp);
+<R404> nPeCOO + HO2 = 0.706*nPeCOOH : 2.91E-13*EXP(1300/temp);
+<R405> nPeBOOH = 1.*OH + 1.*MPRK + 1.*HO2 : 3.55E-06; {1.*PEBO is splitted between MPRK and HO2 ignoring HO2C5O2}
+<R406> nPeBOOH + OH = 1.*nPeBOO : 1.90E-12*EXP(190/temp);
+<R407> nPeBOOH + OH = 1.*MPRK + 1.*OH : 2.30E-11;
+<R408> nPeCOOH = 1.*OH + 0.645*DIEK + 0.645*HO2 + 0.355*EtOO + 0.355*EtCHO : 3.55E-06; {1.*PECO is splitted between DIEK, HO2, EtOO, EtCHO depending on rates}
+<R409> nPeCOOH + OH = 1.*DIEK + 1.*OH : 2.73E-11;
+<R410> MPRK = 1.*MeCO3 + 1.*nPrOO : 1.94E-06;
+<R411> MPRK + OH = 0.27*HCHO + 0.23*NO2 + 0.005*iPrOO + 0.005*MeCO3 - 0.49*OH - 1.*NO - 1.*HO2 : 4.90E-12; {simplified destruction of major product CO2C54O2, ignore MPRKAO2}
+<R412> DIEK = 1.*EtCO3 + 1.*EtOO : 1.94E-06;
+<R413> DIEK + OH = 1.*DIEKOO : 2.00E-12; {DIEKOO = DIEKAO2+DIEKBO2, destruction process of major product DIEKAO2 is used below}
+<R414> DIEKOO + NO = 1.*NO2 + 1.*MeCHO + 1.*EtCO3 : 2.70E-12*EXP(360/temp);
+<R415> DIEKOO + HO2 = 0.706*DIEKOOH : 2.91E-13*EXP(1300/temp);
+<R416> DIEKOOH = 1.*MeCHO + 1.*EtCO3 + 1.*OH : 1.93E-06;
+<R417> DIEKOOH = 1.*OH + 1.*MeCHO + 1.*EtCO3 : 3.55E-06;
+<R418> DIEKOOH + OH = 1.*CO23C5 + 1.*OH : 2.00E-11;
+<R419> DIEKOOH + OH = 1.*DIEKOO : 1.90E-12*EXP(190/temp);
+<R420> CO23C5 = 1.*MeCO3 + 1.*EtCO3 : 2.10E-04;
+<R421> CO23C5 + OH = 1.*MeCHO + 1.*EtCO3 : 1.38E-12; {simplified destruction of CO23C54O2}
+<R422> nPeBOO + NO = 0.120*nPeBCONO2 : 2.70E-12*EXP(360/temp); {nPeBCONO2 = PEBNO3+PECNO3, here nPeBCONO2 yield adjusted to (0.568/0.6095)*0.129=0.120}
+<R423> nPeCOO + NO = 0.117*nPeBCONO2 : 2.70E-12*EXP(360/temp); {nPeBCONO2 = PEBNO3+PECNO3, here nPeBCONO2 yield adjusted to (0.349/0.3905)*0.131=0.117}
+<R424> nPeBCONO2 = 1.*NO2 + 0.417*HO2 + 0.5*MPRK + 0.322*DIEK + 0.178*EtOO + 0.178*EtCHO : 1.53E-06; {yields are average of PEBNO3 and PECNO3 yields, HO2C5O2 from PEBNO3 is ignored and all given as MPRK}
+<R425> nPeBCONO2 + OH = 0.5*MPRK + 0.5*DIEK + 1.*NO2 : 1.49E-12; {rate is average of PEBNO3 and PECNO3 rates}
+{list of new species: nC5H12 nPeBOO nPeCOO nPeBCONO2 MPRK DIEK nPeBOOH nPeCOOH DIEKOO DIEKOOH CO23C5}
+{i-pentane}
+<R500> iC5H12 + OH = 0.6595*iPeCOO + 0.3405*iPeBOO : 3.70E-12; {half of IPEAO2 rolled in to iPeBOO, half - to iPeCOO}
+<R501> iPeBOO + NO = 0.877*NO2 + 0.801*MIPK + 0.801*HO2 + 0.076*MeCHO + 0.076*iPrOO : 2.70E-12*EXP(360/temp); {0.877*IPEBO splitted between MIPK, HO2, MeCHO, iPrOO depending on rates}
+<R502> iPeCOO + NO = 0.956*NO2 + 0.956*Me2CO + 0.956*EtOO : 2.70E-12*EXP(360/temp); {0.956*IPECO is splitted between Me2CO, EtOO}
+<R503> iPeBOO + HO2 = 0.706*iPeBOOH : 2.91E-13*EXP(1300/temp);
+<R504> iPeCOO + HO2 = 0.706*iPeCOOH : 2.91E-13*EXP(1300/temp);
+<R505> iPeBOOH = 1.*OH + 0.914*MIPK + 0.914*HO2 + 0.086*MeCHO + 0.086*iPrOO : 3.55E-06; {1.*IPEBO splitted between MIPK, HO2, MeCHO, iPrOO depending on rates}
+<R506> iPeBOOH + OH = 1.*iPeBOO : 1.90E-12*EXP(190/temp);
+<R507> iPeBOOH + OH = 1.*MIPK + 1.*OH : 2.29E-11;
+<R508> iPeCOOH = 1.*OH + 1.*Me2CO + 1.*EtOO : 3.55E-06; {1.*IPECO splitted between Me2CO, EtOO}
+<R509> iPeCOOH + OH = 1.*iPeCOO : 5.25E-12;
+<R510> MIPK = 1.*MeCO3 + 1.*iPrOO : 1.94E-06;
+<R511> MIPK + OH = 1.*MeCHO + 1.*Me2CO : 2.77E-12; {simplified destruction of major product MIPKAO2, ignore MIPKBO2}
+<R512> iPeBOO + NO = 0.123*iPeBONO2 : 2.70E-12*EXP(360/temp); {iPeBONO2 yield adjusted to (0.297/0.3405)*0.141=0.123}
+<R513> iPeCOO + NO = 0.044*iPeCONO2 : 2.70E-12*EXP(360/temp); {iPeCONO2 yield adjusted to (0.616/0.6595)*0.047=0.044}
+<R514> iPeBONO2 = 1.*NO2 + 0.914*MIPK + 0.914*HO2 + 0.086*MeCHO + 0.086*iPrOO : SUN*1.285E-06; {1.*IPEBO splitted between MIPK, HO2, MeCHO, iPrOO depending on rates, MeONO2 hv rate}
+<R515> iPeBONO2 + OH = 1.*MIPK + 1.*NO2 : 1.82E-12;
+<R516> iPeCONO2 = 1.*NO2 + 1.*Me2CO + 1.*EtOO : SUN*1.285E-06; {1.*IPECO splitted between Me2CO, EtOO, MeONO2 hv rate}
+<R517> iPeCONO2 + OH = 1.*Me2CO + 1.*MeCHO + 1.*NO2 : 4.08E-13;
+{list of new species: iC5H12 iPeBOO iPeCOO iPeBONO2 iPeCONO2 iPeBOOH iPeCOOH MIPK}

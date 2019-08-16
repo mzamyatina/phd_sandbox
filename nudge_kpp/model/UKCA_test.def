@@ -1,0 +1,190 @@
+#include ../eqn/UKCA.spc
+#include ../eqn/UKCA_photolysis_reactions.eqn
+#include ../eqn/nudge_eqn.eqn
+#include ../eqn/UKCA_bimolecular_reactions_pg.eqn
+#include ../eqn/UKCA_termolecular_reactions.eqn
+#include ../eqn/UKCA_combined_photo_term_reactions.eqn
+
+#LOOKATALL
+
+#MONITOR O3; NO2; NO;
+
+
+#INITVALUES
+CFACTOR = 1.;
+ALL_SPEC = 0.;
+
+{Variable speces}
+DUMMY =1.;
+NO2 =6e+08;
+NO  =2.5e+08;
+EMITTER_NO2 =1.;
+EMITTER_NO=1.;
+{Fixed species}
+H2O = 1.7E+16;
+M   = 2.55e+19;
+AIR = 2.55e+19;
+N2  = 2.0145e+19;
+O2  = 5.355e+18;
+
+#INLINE F90_INIT
+TSTART = 0.0D0*3600.D0 !!{12 h}
+TEND = TSTART +24.0D0*3600.D0!! {!1 days}
+DT = 60.00D0 !!{20 minutes}
+TEMP = 298.0D0
+#ENDINLINE
+
+#INLINE F90_GLOBAL
+real(dp) :: kloss_PAN ! real and double precision
+real(dp) :: kloss_MPAN ! real and double precision
+real(dp) :: kloss_PPAN ! real and double precision
+real(dp) :: kloss_HO2NO2_a
+real(dp) :: kloss_N2O5
+real(dp) :: kloss_HO2_HO2_bimol
+real(dp) :: blh = 1E5
+real(dp) :: nox = 1.0e11
+#ENDINLINE
+
+#INLINE F90_RCONST
+
+kloss_HO2_HO2_bimol = 3.00E-13*exp(460.0/temp)*&
+    (1 + 1.4E-21*c(ind_H2O)*exp(2200/Temp))
+
+kloss_PAN = SUN*2.27e-05*exp(-0.6208*temp/300.)+&
+    k3rd_order(temp, c(ind_M),0.3, 4.90E-03, 0.0,&
+    12100.0, 5.40E+16, 0.0, 13830.0)
+
+kloss_HO2NO2_a = SUN*0.0001347*exp(-0.602*temp/300.)+&
+    SUN*0.0*exp(-0.0*temp/300.)&
+    +k3rd_order(temp, c(ind_M), 0.5, 4.10E-05, 0.0, &
+    10650.0, 4.80E+15, 0.0,11170.0)
+
+kloss_N2O5 = SUN*3.324e-05*exp(-0.5664*temp/300.)+&
+    k3rd_order(temp, c(ind_M), 0.35, 1.30E-03, -3.5,&
+    11000.0, 9.70E+14, 0.1, 11080.0)
+
+kloss_MPAN = + SUN*2.27e-05*exp(-0.6208*temp/300.) +&
+    k3rd_order(temp, c(ind_M), 0.3, 4.90E-03, 0.0, &
+    12100.0, 5.40E+16, 0.0, 13830.0)
+
+kloss_PPAN = SUN*2.27e-05*exp(-0.6208*temp/300.) + &
+    k3rd_order(temp, c(ind_M), 0.3, 4.90E-03, 0.0, &
+    12100.0, 5.40E+16, 0.0, 13830.0)
+
+
+#ENDINLINE
+
+#INLINE F90_RATES
+
+function k3rd_order (temp, cair, Fc, klow, &
+     alpha_low, beta_low, khigh, &
+     alpha_high, beta_high)
+  real(8)             :: k3rd_order
+  real(4), intent(in) :: Fc, klow, alpha_low, &
+       beta_low, khigh, alpha_high, beta_high
+  real(8), intent(in) :: temp, cair
+  real(4)             :: k_low, k_high, Ffac, Wfac, Nfac, logF, &
+       nf, zr, zo, zi, zfc
+  
+  k_low  = klow *(temp/300.)**(alpha_low) *exp(-beta_low/temp)*cair
+  k_high = khigh*(temp/300.)**(alpha_high)*exp(-beta_high/temp)
+  if (FC<0.1 ) then
+     k3rd_order = k_low
+  else
+     if (FC>1.0) then
+        zfc = exp(-temp/FC)
+        nf = 0.75 - 1.27*log10(zfc)
+     else
+        zfc=Fc
+        nf = 0.75 - 1.27*log10(zfc) 
+     endif
+     
+     zo = k_low
+     zi = k_high
+     zr = zo / zi
+     k3rd_order = (zo/(1.0_dp+zr)) *                     &
+          zfc**(1.0_dp/(1.0_dp + (log10(zr)/nf)**2.))
+  endif
+end function k3rd_order
+
+
+real function nudge_no_prod_tend(nox, no, no2)
+  real(dp) :: NOX, NO, no2
+  real(dp) :: tau_relax = 60.0 ! timescale for nudging in seconds
+  
+  if ((nox - no - no2) > 0.) then
+      nudge_no_prod_tend  =  no/(no+no2)*(nox - no - no2) / tau_relax
+   else
+     nudge_no_prod_tend = 0.
+  endif
+  
+end function nudge_no_prod_tend
+
+real function nudge_no_loss_tend(nox, no, no2)
+  real(dp) :: NOX, NO, no2
+  real(dp) :: tau_relax = 60.0
+  ! timescale for nudging in seconds
+
+  if ((nox - no - no2) < 0.) then
+     nudge_no_loss_tend  =  no/(no+no2)*(no + no2 - nox) / tau_relax 
+  else
+     nudge_no_loss_tend = 0.
+  endif
+  
+end function nudge_no_loss_tend
+
+real function nudge_no2_prod_tend(nox, no, no2)
+  real(dp) :: NOX, NO, no2
+  real(dp) :: tau_relax = 60.0 ! timescale for nudging in seconds
+  
+  if ((nox - no - no2) > 0.) then
+     nudge_no2_prod_tend  =  no2/(no+no2)*(nox - no - no2) / tau_relax 
+  else
+     nudge_no2_prod_tend  =  0.
+  endif
+  
+end function nudge_no2_prod_tend
+
+
+real function nudge_no2_loss_tend(nox, no, no2)
+  real(dp) :: NOX, NO, no2
+  real(dp) :: tau_relax = 60.0 ! timescale for nudging in seconds
+  
+  if ((nox - no - no2) < 0.) then
+     nudge_no2_loss_tend  =   no2/(no+no2)*(no + no2 - nox) / tau_relax 
+  else
+     nudge_no2_loss_tend  =  0.
+  endif
+  
+end function nudge_no2_loss_tend
+
+
+#ENDINLINE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

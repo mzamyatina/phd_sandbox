@@ -1,0 +1,6 @@
+#EQUATIONS
+<R1an> EMITTER_NO2  = - NO2 : nudge_no2_loss_tend(nox, c(ind_NO), c(ind_NO2));
+<R2an> EMITTER_NO  = - NO  : nudge_no_loss_tend (nox, c(ind_NO), c(ind_NO2));
+<R1bn> EMITTER_NO2 =   NO2 : nudge_no2_prod_tend(nox, c(ind_NO), c(ind_NO2));
+<R2bn> EMITTER_NO  =   NO  : nudge_no_prod_tend (nox, c(ind_NO), c(ind_NO2));
+

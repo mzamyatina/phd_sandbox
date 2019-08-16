@@ -1,0 +1,91 @@
+#EQUATIONS
+{selection of RHC3C5 chemistry}
+
+{propane}
+<R100> C3H8 + OH = 0.736*iPrOO + 0.264*nPrOO : 7.60E-12*EXP(-585.0/temp); {replaces <R85>, <R86> in CheT_RHC1C3.eqn}
+<R101> nPrOO + NO = 0.980*EtCHO + 0.980*HO2 + 0.980*NO2 : 2.90E-12*EXP(350.0/temp); {replaces <R40> in CheT_RHC1C3.eqn}
+<R102> iPrOO + NO = 0.958*Me2CO + 0.958*HO2 + 0.958*NO2 : 2.70E-12*EXP(360.0/temp); {replaces <R24> in CheT_RHC1C3.eqn}
+<R103> nPrOOH + OH = 0.743*EtCHO + 0.743*OH + 0.257*nPrOO : 1.46E-11; {replaces <R116>, <R117> in CheT_RHC1C3.eqn, rate is sum of OH reaction rates from MCM}
+<R104> iPrOOH + OH = 0.814*Me2CO + 0.814*OH + 0.186*iPrOO : 2.02E-11; {replaces <R114>, <R115> in CheT_RHC1C3.eqn, rate is sum of OH reaction rates from MCM}
+{<R105> nPrOO + NO = 0.020*nPrONO2 : 2.90E-12*EXP(350.0/temp);}
+{<R106> iPrOO + NO = 0.042*iPrONO2 : 2.70E-12*EXP(360.0/temp);}
+{<R107> nPrONO2 + OH = 1.*EtCHO + 1.*NO2 : 5.80E-13;}
+{<R108> iPrONO2 + OH = 1.*Me2CO + 1.*NO2 : 6.20E-13*EXP(-230/temp);}
+{<R109> nPrONO2 = 1.*EtCHO + 1.*HO2 + 1.*NO2 : SUN*1.285E-06; {MeONO2 photolysis rate}}
+{<R110> iPrONO2 = 1.*Me2CO + 1.*HO2 + 1.*NO2 : SUN*1.285E-06; {MeONO2 photolysis rate}}
+{list of new species: iPrONO2 nPrONO2}
+
+{n-butane}
+<R201> nC4H10 + OH = 0.873*sBuOO : 9.80E-12*EXP(-425/temp);
+<R202> sBuOO + NO = 0.910*NO2 + 0.597*MeCHO + 0.597*EtOO + 0.313*MEK + 0.313*HO2 : 2.70E-12*EXP(360/temp); {rate is KRO2NO, yields for T=298K, 'missing' 1-BuO2 is rolled into here}
+<R203> sBuOO + HO2 = 1.*sBuOOH : 0.625*2.91E-13*EXP(1300/temp); {rate is KRO2HO2}
+<R204> sBuOOH + OH = 0.86*MEK + 0.86*OH + 0.14*sBuOO : 2.51E-11; {rate is sum of OH reaction rates from MCM}
+<R205> sBuOOH = 0.660*MeCHO + 0.660*EtOO + 0.344*MEK + 0.344*HO2 : 3.55E-06; {yields for T=298K}
+<R206> MEK + OH = 1.*MeCHO + 1.*MeCO3 - 1.*NO + 1.*NO2 : 1.50E-12*EXP(-90/temp); {from CRI (CARB11A), ignores RO2+HO2}
+<R207> MEK = 1.*MeCO3 + 1.*EtOO : 1.94E-06;
+{<R208> sBuOO + NO = 0.09*sBuONO2 : 2.70E-12*EXP(360/temp); {rate is KRO2NO, yields for T=298K, 'missing' 1-BuO2 is rolled into here}}
+{<R209> sBuONO2 + OH = 1.*MEK + 1.*NO2 : 8.60E-13;}
+{<R210> sBuONO2 = 1.*NO2 + 0.656*MeCHO + 0.656*EtOO + 0.344*MEK + 0.344*HO2 : SUN*1.285E-06; {MeONO2 photolysis rate}}
+{list of new species: MEK nC4H10 sBuONO2 sBuOO sBuOOH}
+
+{i-butane}{no nitrates!}
+<R300> iC4H10 + OH = 0.794*tBuOO + 0.206*iBuOO : 1.16D-17*(temp**2)*EXP(225/temp);
+<R301> iBuOO + NO = 1.*iPrCHO + 1.*HO2 + 1.*NO2 : 2.7D-12*EXP(360/temp); {rate is KRO2NO}
+<R302> tBuOO + NO = 1.*Me2CO + 1.*MeOO + 1.*NO2 : 2.7D-12*EXP(360/temp); {rate is KRO2NO}
+<R303> iBuOO + HO2 = 1.*iBuOOH : 0.625*2.91D-13*EXP(1300/temp); {rate is KRO2HO2}
+<R304> tBuOO + HO2 = 1.*tBuOOH : 0.625*2.91D-13*EXP(1300/temp); {rate is KRO2HO2}
+<R305> iBuOOH + OH = 0.77*iPrCHO + 0.77*OH + 0.23*iBuOO : 1.60E-11; {rate is sum of OH reaction rates from MCM}
+<R306> iBuOOH = 1.*iPrCHO + 1.*HO2 + 1.*OH : 3.55e-06;
+<R307> tBuOOH + OH = 1.*tBuOO : 2.17D-12*EXP(190/temp);
+<R308> tBuOOH = 1.*Me2CO + 1.*MeOO + 1.*OH : 3.55e-06;
+<R309> iPrCHO + OH = 1.*iPrCO3 : 6.8D-12*EXP(410/temp); {.887 goes here in MCM}
+<R310> iPrCHO = 1.*iPrOO + 1.*HO2 + 1.*CO : 3.04e-05;
+<R311> iPrCO3 + NO = 1.*iPrOO + 1.*NO2 : 7.5D-12*EXP(290/temp); {rate is KAPNO}
+<R312> iPrCO3 + HO2 = 1.*iPrOO : 5.2D-13*EXP(980/temp); {rate is KAPHO2}
+{list of new species: iC4H10 iBuOO iBuOOH tBuOO tBuOOH iPrCHO iPrCO3}
+
+{n-pentane}
+<R400> nC5H12 + OH = 0.62*nPeBOO + 0.38*nPeCOO : 2.44D-17*(temp**2)*EXP(183/temp); {nPeAOO rolled in to B and C}
+<R401> nPeBOO + NO = 0.871*MPRK + 0.871*NO2 : 2.7D-12*EXP(360/temp); {rate is KRO2NO, ignore HO2C5O2}
+<R402> nPeCOO + NO = 0.304*EtCHO + 0.304*EtOO + 0.565*DIEK + 0.869*NO2 + 0.565*HO2 : 2.7D-12*EXP(360/temp); {rate is KRO2NO}
+<R403> nPeBOO + HO2 = 1.*nPeBOOH : 0.706*2.91D-13*EXP(1300/temp); {rate is KRO2HO2}
+<R404> nPeCOO + HO2 = 1.*nPeCOOH : 0.706*2.91D-13*EXP(1300/temp); {rate is KRO2HO2}
+<R405> nPeBOOH + OH = 0.86*MPRK + 0.14*nPeBOO + 0.86*OH : 2.66E-11; {rate is sum of OH reaction rates from MCM}
+<R406> nPeBOOH = 1.*MPRK + 1.*OH + 0.19*HO2 : 3.55e-06; {ignore HO2C5O2}
+<R407> nPeCOOH + OH = 1.*DIEK + 1.*OH : 2.73E-11;
+<R408> nPeCOOH = 0.65*DIEK + 0.65*HO2 + 0.35*EtCHO + 0.35*EtOO + 1.*OH : 3.55e-06;
+<R409> DIEK = 1.*EtCO3 + 1.*EtOO : 1.94e-06;
+<R410> DIEK + OH = 1.*DIEKAOO : 2.00e-12;
+<R411> DIEKAOO + NO = 1.*EtCO3 + 1.*MeCHO + 1.*NO2 : 2.7D-12*EXP(360/temp);
+<R412> DIEKAOO + HO2 = 1.*DIEKAOOH : 0.706*2.91D-13*EXP(1300/temp); {rate is KRO2HO2}
+<R413> DIEKAOOH = 1.*EtCO3 + 1.*MeCHO + 1.*OH : 5.49e-06; {rate is sum of photolysis reaction rates from MCM}
+<R414> DIEKAOOH + OH = 0.848*CO23C5 + 0.848*OH + 0.152*DIEKAOO : 2.36E-11; {rate is sum of OH reaction rates from MCM}
+<R415> CO23C5 = 1.*MeCO3 + 1.*EtCO3 : 2.09e-04;
+<R416> CO23C5 + OH = 1.*EtCO3 + 1.*MeCHO : 1.38e-12;
+<R417> MPRK = 1.*MeCO3 + 1.*nPrOO : 1.94e-06;
+<R418> MPRK + OH = 0.602*CARB11A + 0.602*HO2 + 0.398*MeCHO + 0.398*EtOO - 1.*NO + 1.*NO2 : 4.90E-12; {CARB13 from CRI, ignores RO2+HO2}
+<R419> CARB11A = 1.*MeCO3 + 1.*EtOO : 1.94e-06; {from CRI, ignores RO2+HO2}
+<R420> CARB11A + OH = 1.*MeCHO + 1.*MeCO3 - 1.*NO + 1.*NO2 : 3.24D-18*(temp**2)*EXP(414/temp);
+{<R421> nPeBOO + NO = 1.*nPeBCONO2 : 0.129*2.7D-12*EXP(360/temp); {rate is KRO2NO, ignore HO2C5O2}}
+{<R422> nPeCOO + NO = 1.*nPeBCONO2: 0.131*2.7D-12*EXP(360/temp); {rate is KRO2NO}}
+{<R423> nPeBCONO2 + OH = 0.5*MPRK + 0.5*DIEK + 1.*NO2 : 1.49e-12; {rate is average of 2 and 3-pentyl nitrate rates}}
+{<R424> nPeBCONO2 = 0.824*HO2 + 0.5*MPRK + 0.324*DIEK + 0.176*EtOO + 0.176*EtCHO + 1.*NO2 : 1.53e-06; {yields are average of 2 and 3-pentyl nitrate yields, HO2C5O2 from 2-pentyl is ignored and all given as MPRK}}
+{list of new species: nC5H12 nPeBOO nPeCOO nPeBCONO2 MPRK DIEK nPeBOOH nPeCOOH DIEKAOO DIEKAOOH CO23C5 CARB11A}
+
+{i-pentane}
+<R500> iC5H12 + OH = 0.6595*iPeCOO + 0.3405*iPeBOO : 3.70E-12; {iPeAOO rolled in to iPeBOO and iPeCOO}
+<R501> iPeBOO + NO = 0.796*MIPK + 0.796*HO2 + 0.074*MeCHO + 0.074*iPrOO : 2.7D-12*EXP(360/temp);
+<R502> iPeCOO + NO = 0.953*Me2CO + 0.953*EtOO + 0.953*NO2 : 2.7D-12*EXP(360/temp);
+<R503> iPeBOO + HO2 = 1.*iPeBOOH : 0.706*2.91D-13*EXP(1300/temp);
+<R504> iPeCOO + HO2 = 1.*iPeCOOH : 0.706*2.91D-13*EXP(1300/temp);
+<R505> iPeBOOH + OH = 0.86*MIPK + 0.86*OH + 0.14*iPeBOO : 2.67E-11; {rate is sum of OH reaction rates from MCM}
+<R506> iPeBOOH = 0.915*MIPK + 0.915*HO2 + 0.085*MeCHO + 0.085*iPrOO : 3.55e-06;
+<R507> iPeCOOH + OH = 1.*iPeCOO : 5.25e-12;
+<R508> iPeCOOH = 1.*Me2CO + 1.*EtOO + 1.*OH : 3.55e-06;
+<R509> MIPK + OH = 1.*MeCHO + 1.*Me2CO : 2.77e-12;
+<R510> MIPK = 1.*MeCO3 + 1.*iPrOO : 1.94e-06;
+{<R511> iPeBOO + NO = 0.048*iPeBONO2 : 0.130*2.7D-12*EXP(360/temp); {iPeBONO2 yield adjusted to 0.3405*0.141=0.048}
+{<R512> iPeCOO + NO = 0.031*iPeCONO2 : 0.047*2.7D-12*EXP(360/temp);} {iPeCONO2 yield adjusted to 0.6595*0.047=0.031}
+{<R513> iPeBONO2 + OH = 1.*MIPK + 1.*NO2 : 1.82e-12;}
+{<R514> iPeBONO2 = 0.900*MIPK + 0.900*HO2 + 0.1*MeCHO + 0.1*iPrONO2 + 1.*NO2 : SUN*1.285e-06; {MeONO2 photolysis rate}}
+{list of new species: iC5H12 iPeBOO iPeCOO iPeBONO2 iPeCONO2 iPeBOOH iPeCOOH MIPK}

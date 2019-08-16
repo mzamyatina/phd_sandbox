@@ -1,0 +1,15 @@
+#EQUATIONS
+<R1> 	EtCO3	 +	NO2		 = 		PPAN	+	M					: 	 k3rd_order(temp, c(ind_M), 0.3, 2.70E-28, -7.1, 0.0, 1.20E-11, -0.9, 0.0);
+<R2>    HO2 + HO2              = H2O2 + O2                        : kloss_HO2_HO2_termol;
+<R3> 	HO2	 +	NO2		 = 		HO2NO2	+	M					: 	 k3rd_order(temp, c(ind_M), 0.6, 2.00E-31, -3.4, 0.0, 2.90E-12, 0.0, 0.0);
+<R5> 	MACRO2	 +	NO2		 = 		MPAN	+	M					: 	 k3rd_order(temp, c(ind_M), 0.3, 2.70E-28, -7.1, 0.0, 1.20E-11, -0.9, 0.0);
+{<R6> 	MeCO3	 +	NO2		 = 		PAN	+	M					: 	 k3rd_order(temp, c(ind_M), 0.3, 1.30E-03, -7.1, 0.0, 1.20E-11, -0.9, 0.0);}
+<R17> 	MeCO3	 +	NO2		 = 		PAN	+	M	: 	 k3rd_order(temp, c(ind_M), 0.3, 2.70E-28, -7.1, 0.0, 1.20E-11, -0.9, 0.0);
+<R9> 	NO2	 +	NO3		 = 		N2O5	+	M					: 	 k3rd_order(temp, c(ind_M), 0.35, 7.00E-31, -4.1, 0.0, 1.90E-12, 0.2, 0.0);
+{<R23> 	NO2	 +	NO3		 = 		N2O5	+	M	: 	kmt03;}
+<R10> 	O3P	 +	O2		 = 		O3	+	M					: 	kloss_o_o2;
+<R11> 	OH	 +	NO		 = 		HONO	+	M					: 	 k3rd_order(temp, c(ind_M), 0.6, 6.90E-31, -2.6, 0.0, 3.60E-11, -0.1, 0.0);
+<R12> 	OH	 +	NO2		 = 		HNO3	+	M					: 	 k3rd_order(temp, c(ind_M), 0.6, 1.8E-30, -3.0, 0.0, 2.80E-11, 0.0, 0.0);
+<R16> 	OH	 +	OH		 = 		H2O2	+	M	: 	 k3rd_order(temp, c(ind_M), 0.6, 6.90E-31, -1.0, 0.0, 2.60E-11, 0.0, 0.0);
+
+{list of species: EtCO3 NO2 PPAN M HO2 H2O2 O2 HO2NO2 MACRO2 MPAN MeCO3 PAN N2O5 NO3 O3P O3 OH NO HONO HNO3 }

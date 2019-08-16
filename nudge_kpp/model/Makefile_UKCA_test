@@ -1,0 +1,178 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# User: Set here the F90 compiler and options
+#       Pedefined compilers: INTEL, PGF, HPUX, LAHEY
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#COMPILER = G95
+#COMPILER = LAHEY
+#COMPILER = INTEL
+#COMPILER = PGF
+#COMPILER = HPUX
+COMPILER = GFORTRAN
+
+FC_G95     = g95
+FOPT_G95   = -cpp -O -pg -fbounds-check -fimplicit-none  -Wall -ftrace=full
+
+FC_LAHEY   = lf95
+# More aggressive for production runs:
+#FOPT_LAHEY = -Cpp --pca -O
+# More checking for debugging:
+FOPT_LAHEY = -Cpp --chk a,e,s,u --pca --ap -O0 -g --trap --trace --chkglobal
+
+FC_INTEL   = ifort 
+# More aggressive for production runs:
+#FOPT_INTEL = -cpp -O -fp-model precise -pc80 -prec_div
+# More checking for debugging:
+FOPT_INTEL = -cpp -O0 -fp-model strict -implicitnone -ftrapuv \
+              -debug all -check all -warn all
+
+FC_PGF     = pgf90
+# More aggressive for production runs:
+FOPT_PGF   = -Mpreprocess -O -fast -pc 80 -Kieee
+# More checking for debugging:
+#FOPT_PGF   = -Mpreprocess -O0 -Mbounds -Mchkfpstk -Mchkptr -Mchkstk \
+#             -Ktrap=fp -pc 80 -Kieee
+
+FC_HPUX    = f90
+FOPT_HPUX  = -O -u +Oall +check=on
+
+FC_GFORTRAN     = gfortran
+FOPT_GFORTRAN   = -cpp -O
+
+# define FULL_ALGEBRA for non-sparse integration
+FC   = $(FC_$(COMPILER))
+FOPT = $(FOPT_$(COMPILER)) # -DFULL_ALGEBRA
+
+LIBS =
+#LIBS = -llapack -lblas
+
+# Command to create Matlab mex gateway routines 
+# Note: use $(FC) as the mex Fortran compiler
+MEX  = mex
+
+GENSRC = UKCA_test_Precision.f90  \
+	 UKCA_test_Parameters.f90     \
+	 UKCA_test_Global.f90  
+
+GENOBJ = UKCA_test_Precision.o    \
+	 UKCA_test_Parameters.o       \
+	 UKCA_test_Global.o     
+
+FUNSRC = UKCA_test_Function.f90 
+FUNOBJ = UKCA_test_Function.o 
+
+JACSRC = UKCA_test_JacobianSP.f90  UKCA_test_Jacobian.f90
+JACOBJ = UKCA_test_JacobianSP.o    UKCA_test_Jacobian.o
+
+HESSRC = UKCA_test_HessianSP.f90   UKCA_test_Hessian.f90
+HESOBJ = UKCA_test_HessianSP.o     UKCA_test_Hessian.o
+
+STMSRC = UKCA_test_StoichiomSP.f90 UKCA_test_Stoichiom.f90 
+STMOBJ = UKCA_test_StoichiomSP.o   UKCA_test_Stoichiom.o
+
+UTLSRC = UKCA_test_Rates.f90 UKCA_test_Util.f90 UKCA_test_Monitor.f90
+UTLOBJ = UKCA_test_Rates.o   UKCA_test_Util.o   UKCA_test_Monitor.o
+
+LASRC  = UKCA_test_LinearAlgebra.f90 
+LAOBJ  = UKCA_test_LinearAlgebra.o   
+
+STOCHSRC = UKCA_test_Stochastic.f90 
+STOCHOBJ = UKCA_test_Stochastic.o 
+
+MAINSRC = UKCA_test_Main.f90   UKCA_test_Initialize.f90   UKCA_test_Integrator.f90 UKCA_test_Model.f90
+MAINOBJ = UKCA_test_Main.o     UKCA_test_Initialize.o     UKCA_test_Integrator.o   UKCA_test_Model.o 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# User: modify the line below to include only the
+#       objects needed by your application
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALLOBJ = $(GENOBJ) $(FUNOBJ) $(JACOBJ) $(HESOBJ) $(STMOBJ) \
+	 $(UTLOBJ) $(LAOBJ)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# User: modify the line below to include only the
+#       executables needed by your application
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+all:    exe
+
+exe:	$(ALLOBJ) $(MAINOBJ) 
+	$(FC) $(FOPT) $(ALLOBJ) $(MAINOBJ) $(LIBS) -o UKCA_test.exe
+
+stochastic:$(ALLOBJ) $(STOCHOBJ) $(MAINOBJ)
+	$(FC) $(FOPT) $(ALLOBJ) $(STOCHOBJ) $(MAINOBJ) $(LIBS) \
+	-o UKCA_test_stochastic.exe
+
+mex:    $(ALLOBJ)
+	$(MEX) FC#$(FC) -fortran -O UKCA_test_mex_Fun.f90     $(ALLOBJ)
+	$(MEX) FC#$(FC) -fortran -O UKCA_test_mex_Jac_SP.f90  $(ALLOBJ)
+	$(MEX) FC#$(FC) -fortran -O UKCA_test_mex_Hessian.f90 $(ALLOBJ)
+
+clean:
+	rm -f UKCA_test*.o UKCA_test*.mod \
+	UKCA_test*.dat UKCA_test.exe UKCA_test*.mexglx \
+	UKCA_test.map
+
+distclean:
+	rm -f UKCA_test*.o UKCA_test*.mod \
+	UKCA_test*.dat UKCA_test.exe UKCA_test.map \
+	UKCA_test*.f90 UKCA_test_*.mexglx
+
+UKCA_test_Precision.o: UKCA_test_Precision.f90 
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Parameters.o: UKCA_test_Parameters.f90 \
+	            UKCA_test_Precision.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Monitor.o: UKCA_test_Monitor.f90 \
+	             UKCA_test_Precision.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Global.o: UKCA_test_Global.f90 \
+	            UKCA_test_Parameters.o UKCA_test_Precision.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Initialize.o: UKCA_test_Initialize.f90  $(GENOBJ) 
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Function.o: UKCA_test_Function.f90  $(GENOBJ) 
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Stochastic.o: UKCA_test_Stochastic.f90  $(GENOBJ) 
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_JacobianSP.o: UKCA_test_JacobianSP.f90 $(GENOBJ)
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Jacobian.o: UKCA_test_Jacobian.f90  $(GENOBJ) UKCA_test_JacobianSP.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_LinearAlgebra.o: UKCA_test_LinearAlgebra.f90 $(GENOBJ) UKCA_test_JacobianSP.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Rates.o: UKCA_test_Rates.f90  $(GENOBJ) 
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_HessianSP.o: UKCA_test_HessianSP.f90  $(GENOBJ)
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Hessian.o:  UKCA_test_Hessian.f90 $(GENOBJ) UKCA_test_HessianSP.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_StoichiomSP.o: UKCA_test_StoichiomSP.f90 $(GENOBJ)
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Stoichiom.o: UKCA_test_Stoichiom.f90  $(GENOBJ) UKCA_test_StoichiomSP.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Util.o: UKCA_test_Util.f90  $(GENOBJ) UKCA_test_Monitor.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Main.o: UKCA_test_Main.f90  $(ALLOBJ) UKCA_test_Initialize.o UKCA_test_Model.o UKCA_test_Integrator.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Model.o: UKCA_test_Model.f90  $(ALLOBJ) UKCA_test_Integrator.o
+	$(FC) $(FOPT) -c $<
+
+UKCA_test_Integrator.o: UKCA_test_Integrator.f90  $(ALLOBJ)
+	$(FC) $(FOPT) -c $<
