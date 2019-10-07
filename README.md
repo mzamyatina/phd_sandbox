@@ -54,7 +54,7 @@ Example repo: [`leonard`](https://github.com/bmorris3/leonard)
 
 ### Next steps
 * Make your code citable by minting a [Zenodo DOI for your GitHub repository](https://guides.github.com/activities/citable-code/)
-* Consider submitting your software to the [Journal of Open Source Software](http://joss.theoj.org/), and ask Kolby about [her experience with it](http://joss.theoj.org/papers/a3d09040637afbcff0a01e0d77c563cf)
+* Consider submitting your software to the [Journal of Open Source Software](http://joss.theoj.org/) ([example 1](https://joss.theoj.org/papers/10.21105/joss.00854), [example 2](https://joss.theoj.org/papers/10.21105/joss.01130))
 * Make your code conda-installable with a few relatively simple steps with [conda-forge](https://conda-forge.github.io)
 
 ### General style tips
