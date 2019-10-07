@@ -39,7 +39,7 @@ Example repo: [`leonard`](https://github.com/bmorris3/leonard)
 
 ### Packaging references
 
-* [**astropy package-template tutorial**](http://docs.astropy.org/en/latest/development/affiliated-packages.html)
+* [**astropy package-template tutorial**](http://docs.astropy.org/projects/package-template/en/latest/)
 * [Simplified project structure reference](http://docs.python-guide.org/en/latest/writing/structure/)
 * [Python 3 official packaging reference](https://docs.python.org/3/tutorial/modules.html#packages)
 * [reStructuredText cheat sheet](http://www.sphinx-doc.org/en/stable/rest.html) for Sphinx documentation
