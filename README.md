@@ -3,6 +3,8 @@
 
 Thursday, October 10, 2019
 
+Harrison 170
+
 University of Exeter
 
 #### Rough Schedule
@@ -18,14 +20,13 @@ If you're a `conda` user, simply type:
 
 ```
 conda install numpy scipy astropy matplotlib h5py 
-conda install -c astropy astroquery astroplan
 conda install -c conda-forge jupyterlab
 ```
 
 If you prefer `pip`, type: 
 
 ```
-pip install numpy scipy astropy matplotlib h5py astroquery astroplan jupyterlab
+pip install numpy scipy astropy matplotlib h5py jupyterlab
 ```
 
 #### Further reading
@@ -33,7 +34,6 @@ pip install numpy scipy astropy matplotlib h5py astroquery astroplan jupyterlab
 For additional resources on getting up to speed in Python, I highly recommend Jake Van der Plas' book _A Whirlwind Tour of Python_, which is [currently available for free](http://www.oreilly.com/programming/free/files/a-whirlwind-tour-of-python.pdf). If you're ready to go deeper, there are [many freely available books on Python to try](http://pythonbooks.revolunet.com).
 
 # Python Packaging Tutorial
-Brett Morris
 
 Example repo: [`leonard`](https://github.com/bmorris3/leonard)
 
