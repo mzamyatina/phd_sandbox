@@ -43,7 +43,7 @@ Example repo: [`leonard`](https://github.com/bmorris3/leonard)
 * [Simplified project structure reference](http://docs.python-guide.org/en/latest/writing/structure/)
 * [Python 3 official packaging reference](https://docs.python.org/3/tutorial/modules.html#packages)
 * [reStructuredText cheat sheet](http://www.sphinx-doc.org/en/stable/rest.html) for Sphinx documentation
-* [Reference on 2->3 compatibility](http://python-future.org/compatible_idioms.html#essential-syntax-differences) (though 90% of your compatibility issues will be resolved by including [this line](https://github.com/astropy/astropy/blob/master/astropy/coordinates/sky_coordinate.py#L1))
+* [Reference on 2->3 compatibility](http://python-future.org/compatible_idioms.html#essential-syntax-differences) 
 
 ### astropy-related FAQ
 * What's an [astropy-affiliated package?](http://www.astropy.org/affiliated/)
